@@ -1,13 +1,12 @@
 package org.arya.service;
 
-import org.arya.model.Autor;
 import org.arya.model.Buku;
 import org.arya.model.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-
+import org.arya.model.Author;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
@@ -81,6 +80,8 @@ public class BukuImpl implements BukuService {
         return listBuku;
     }
 
+    /*=====================================================================================*/
+
     @Override
     public List<Publisher> getPublisherAll() throws SQLException {
         String sql = "SELECT publisher_id, publisher_name FROM publisher";
@@ -98,6 +99,8 @@ public class BukuImpl implements BukuService {
         return null;
     }
 
+
+
     @Override
     public Integer simpanPublisher(Publisher publiser) {
         String sql = "INSERT INTO publisher (publisher_id, publisher_name)" + "VALUES(:publisher_id, :publisher_name)";
@@ -107,6 +110,11 @@ public class BukuImpl implements BukuService {
         namedParameterJdbcTemplate.update(sql, map);
         return publiser.getPublisherId();
 
+    }
+
+    @Override
+    public Integer simpanAuthor(Publisher publiser) {
+        return null;
     }
 
     @Override
@@ -122,91 +130,58 @@ public class BukuImpl implements BukuService {
         });
 
     }
+
+
+
+
 //==============================================================================================================//
-    @Override
-    public Autor getAuthorAll(int id) throws SQLException {
-        Connection conn = dataSource.getConnection();
-        String sql = "SELECT author_id, author_name\n" + " FROM author =? ";
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ResultSet result = ps.executeQuery();
-        Autor autor = new Autor();
-        while (result.next()) {
-            autor.setAuthorId(result.getInt("id"));
-            autor.setAuthorName(result.getString("pengarang"));
-        }
-        System.out.println("Id" + autor.getAuthorId());
-        System.out.println("pengarang" + autor.getAuthorName());
-        return autor;
-    }
+
 
     @Override
-   /* public List<Autor> getAuthorAll() throws SQLException {
-        Connection conn = dataSource.getConnection();
-        String sql = "SELECT author_id\n" +
-                "author_name\n" +
-                "authorId, c.author_id as id\n" +
-                "authorName,c.author_name as pengarang" +
-                "form \n" +
-                "author a\n" +
-                "left join c.author_id\n" +
-                "left join c.author_name\n";
-
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ResultSet result = ps.executeQuery();
-        List<Autor> listAutor = new ArrayList<>();
-        while (result.next()) {
-            Autor autor = new Autor();
-            autor.setAuthorId(result.getInt("id"));
-            autor.setAuthorName(result.getString("pengarang"));
-            listAutor.add(autor);
-        }
-        System.out.println(" ==> " + listAutor.size());
-        return listAutor;
-
-    }*/
-
-    public List<Autor> getAuthorAll() throws SQLException {
-        String sql = "SELECT publisher_id, publisher_name FROM publisher";
-        return namedParameterJdbcTemplate.query(sql, (rs, rn) -> {
-
-            Autor autor = new Autor();
-            autor.setAuthorId(rs.getInt("author_id"));
-            autor.setAuthorName(rs.getString("author_name"));
-            return autor;
-
-        });
+    public org.arya.model.Author getAuthorAll(Integer id) {
+        return null;
     }
-
-    public org.arya.model.Autor getAuthorAll() {
+    @Override
+    public List<Author> geAuthorAll() throws SQLException {
         return null;
     }
 
-@Override
-        public Integer simpanAuthor(Autor autor){
-            String sql = "INSERT INTO author (author_id, author_name)" + "VALUES(:author_id, :author_name)";
-            MapSqlParameterSource map = new MapSqlParameterSource();
-            map.addValue("author_id", autor.getAuthorId());
-            map.addValue("author_name", autor.getAuthorName());
-            namedParameterJdbcTemplate.update(sql, map);
-            return simpanAuthor();
+    @Override
+    public List<Author> getAuthorAll() throws SQLException {
+        String sql = "SELECT author_id, author_name FROM author";
+        return namedParameterJdbcTemplate.query(sql, (rs, rn) -> {
+
+            Author author = new Author();
+            author.setAuthorId(rs.getInt("author_id"));
+            author.setAuthorName(rs.getString("author_name"));
+            return author;
+    });
+    }
+    @Override
+    public Integer simpanAuthor(Author author) {
+        String sql = "INSERT INTO author (author_id, author_name)" + "VALUES(:author_id, :author_name)";
+        MapSqlParameterSource map = new MapSqlParameterSource();
+        map.addValue("author_id", author.getAuthorId());
+        map.addValue("author_name", author.getAuthorName());
+        namedParameterJdbcTemplate.update(sql, map);
+        return author.getAuthorId();
 
     }
-@Override
-    public Autor getAuthor(Integer id) {
-        String sql = "SELECT author_id, author_name FROM author    where author_id = :author";
-        MapSqlParameterSource map = new MapSqlParameterSource();
-        map.addValue("author", id);
-        return namedParameterJdbcTemplate.queryForObject(sql, map, (rs, rn) -> {
-            Publisher publisher = new Publisher();
-            publisher.setPublisherId(rs.getInt("author_id"));
-            publisher.setPublisherName(rs.getString("author_name"));
-            return autor.getAuthor();
 
-            });
+    @Override
+    public Author getAuthor(Integer id) {
+        String sql = "SELECT author_id, author_name FROM author    where author_id = :id";
+        MapSqlParameterSource map = new MapSqlParameterSource();
+        map.addValue("id", id);
+        return namedParameterJdbcTemplate.queryForObject(sql, map, (rs, rn) -> {
+            Author author = new Author();
+            author.setAuthorId(rs.getInt("author_id"));
+            author.setAuthorName(rs.getString("author_name"));
+            return author;
+        });
+
     }
 }
-
-
 
 
 

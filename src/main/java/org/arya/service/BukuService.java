@@ -1,5 +1,5 @@
 package org.arya.service;
-import org.arya.model.Autor;
+import org.arya.model.Author;
 import org.arya.model.Buku;
 import org.arya.model.Publisher;
 import java.sql.SQLException;
@@ -19,15 +19,23 @@ public interface BukuService {
 
     Publisher getPublisherAll(Integer id);
 
+    List<Author> geAuthorAll() throws SQLException;
+
+
     Integer simpanPublisher(Publisher publiser);
+
+    Integer simpanAuthor(Publisher publiser);
 
     Publisher getPublisher(Integer id);
 
-    Autor getAuthorAll(int id)throws SQLException;
+    Author getAuthorAll(Integer id);
 
-    List<Autor> getAuthorAll() throws SQLException;
-    Integer simpanAuthor(Autor autor);
+    List<Author>getAuthorAll() throws SQLException;
 
-    Autor getAuthor(Integer id);
+    Integer simpanAuthor(Author author);
+
+    Author getAuthor(Integer id);
+
+
 
 }

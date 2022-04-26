@@ -1,5 +1,6 @@
 org\arya\config\config.class
 org\arya\service\BukuImpl.class
+org\arya\model\Author.class
 org\arya\MainKelas.class
 org\arya\service\BukuService.class
 org\arya\model\KeranjangBuku.class
